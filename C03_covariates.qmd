@@ -6,13 +6,13 @@ format: html
 > “In the end that was the choice you made, and it doesn’t matter how hard it was to make it. It matters that you did.”  
 >   ~ Cassandra Clare
 
-Now we turn our attention to what we know and guess about the environments.  We are using the [Brickman data]() to make habitat suitability maps for select species under two climate scenarios (RCP45 and RCP85) at two different times (2055 and 2075) in the future.  Each variable we might use is called covariate or predictor. Our covariates are nicely packaged up and tidy, but the reality is that it often requires a good deal of data wrangling if the data are messy. 
+Now we turn our attention to what we know and guess about the environments.  We are using the [Brickman data](https://github.com/BigelowLab/ColbyForecasting/wiki/Brickman) to make habitat suitability maps for select species under two climate scenarios (RCP45 and RCP85) at two different times (2055 and 2075) in the future.  Each variable we might use is called covariate or predictor. Our covariates are nicely packaged up and tidy, but the reality is that it often requires a good deal of data wrangling if the data are messy. 
 
 Our step here is to make sure that two or more covariates are not highly correlated if they are, then we would likely want to drop all but one.
 
 # Setup
 
-As always, we start by running our setup function. Start RStudio/R, and relaod your project with the menu `File > Recent Projects`. 
+As always, we start by running our setup function. Start RStudio/R, and reload your project with the menu `File > Recent Projects`. 
 
 ```{r setup}
 source("setup.R")
@@ -67,7 +67,6 @@ Before we do commit to a selection of variables, let's turn our attention back t
 
 ```{r present_august_model_input}
 model_input = read_model_input(scientificname = "Mola mola", 
-                               approach = "greedy", 
                                mon = "Aug")
 model_input
 ```
@@ -102,13 +101,12 @@ You may have noticed that we write a lot of things to files (aka, "writing to di
 
 In R, a confguration is treated as a named list.  Each element of a list is named, but beyond that there aren't any particular rules about confugurations. You can learn more about configurations [in this tutorial](https://bigelowlab.github.io/handytandy/files-configurations.html).
 
-Let's make a confuguration list that holds 4 items: version identifier, species name, sampling approach and the names of the variables to model with.
+Let's make a configuration list that holds 4 items: version identifier, species name and the names of the variables to model with.
 
 ```{r make_config}
 cfg = list(
-  version = "g_Aug",               # g for greedy!
+  version = "Aug",
   scientificname = "Mola mola",
-  approach = "greedy",
   mon = "Aug",
   keep_vars =  keep)
 ```
@@ -122,47 +120,65 @@ getElement(cfg, "scientificname")
 getElement(cfg, 2)
 ```
 
-Now we'll write this list to a file.  First let's set up a pathwy where we might store these configurations, and for that matter, to store our modeling files.  We'll make a new directory, `models/g008` and write the configuration there.  We'll use the famous "YAML" format to store the file.  See the file `functions/configuration.R` for documentation on reading and writing.
+Now we'll write this list to a file.  First let's set up a path where we might store these configurations, and for that matter, to store our modeling files.  We'll make a new directory, `models/Aug` and write the configuration there.  We'll use the famous "YAML" format to store the file.  See the file `functions/configuration.R` for documentation on reading and writing.
 
 ```{r save config}
 ok = make_path(data_path("models")) # make a directory for models
 write_configuration(cfg)            
 ```
 
-Use the `Files` pane to navigate to your personal data directory.  Open the `g_Aug.yaml` file - this is what you configuration looks like in YAML.  Fortunately we don't mess manually with these much.
+Use the `Files` pane to navigate to your personal data directory.  Open the `Aug.yaml` file - this is what you configuration looks like in YAML.  Fortunately we don't mess by hand with these much.
+
+```
+version: Aug
+scientificname: Mola mola
+mon: Aug
+keep_vars:
+- MLD
+- Sbtm
+- SSS
+- SST
+- Tbtm
+- U
+- V
+```
 
 # Recap
 
-We loaded the covariates for the "PRESENT" climate scenario and looked at collinearity across the entore study domain.  We invoked a function that suggests which variables to keep and which to drop based upon collinearity.  We examined the covariates at just the `presence` and `background` locations.  We then saved a configuration for later reuse.
+We loaded the covariates for the "PRESENT" climate scenario and looked at collinearity across the entire study domain.  We invoked a function that suggests which variables to keep and which to drop based upon collinearity.  We examined the covariates at just the `presence` and `background` locations.  We then saved a configuration for later reuse.
 
-# Coding Assignment
-Open and edit the file called `functions/select_covariates.R`.  Within the file write the function(s) you need to select the "keeper" variables for a given approach (greedy or conservative) and a given month (Jan - Dec).  Have the function return an appropriate configuration list. The function shoulkd start out approximately like this...
+# Coding Assignment C03
+
+Open and edit the file called `functions/select_covariates.R`.  Within the file write the function(s) you need to select the "keeper" variables and a given month (Jan - Dec).  Have the function return an appropriate configuration list. The function should start out approximately like this...
 
 ```
-#' Given a species, month and sampling approach select variabkes for each month
+#' Given a species, month select variables for each month
 #'
-#' @param approach chr one of "greedy" (default) or "conservative"
 #' @param mon chr month abbreviation ("Jan" default)
 #' @param scientificname chr the species studied (default "Mola mola")
 #' @param path chr file path to the personal data directory
 #' @return a configuration list
-select_covariates = function(approach = "greedy", 
-  mon = "Jan",
+select_covariates = function(mon = "Jan",
   scientificname = "Mola mola",
   path = data_path()){
   
+  #
+  # you do stuff here to generate your own listing of variables to keep
+  # 
   
   ret = list(
-    version = <something you make goes here>,
+    version = month, 
     scientificname = scientificname,
-    approach = approach,
     mon = month,
-    keep_vars = <something you make goes here>)
+    keep_vars = <something you make above goes here>)
+  return(r)
 }
 ```
 
-Use the [iterations tutorial](https://bigelowlab.github.io/handytandy/iterations.html) to apply your `select_covariates()` for each month using each approach.  At each iteration write the configuration.  When you are done, you should have 12 YAML files for each approach - so 24 YAML files written all together for each species.
+Use the [iterations tutorial](https://bigelowlab.github.io/handytandy/iterations.html) to apply your `select_covariates()` for each month using each approach.  At each iteration write the configuration.  When you are done, you should have 12 YAML files.
 
+## Challenge C03
 
+Write a function that will read all of your configurations, and then generate a listing of the variables common to every model and a second listing of the ones that are not. Hint: see the help for `intersect()` and `setdiff`. 
 
 
