@@ -1,20 +1,25 @@
 
-read_configuration = function(version = "v001",
+read_configuration = function(scientificname = "Canis familiaris",
+                              version = "v001",
                               path = data_path("models")){
   
   #' Given a version identifier, read a configuration
   #' 
+  #' @param scientificname str the scientific name
   #' @param version chr the version identifier (defaults to 'v001')
   #' @param path chr you personal model data path (defaults to `data_path("models")`)
   #' @return configuration list
   
-  filename = file.path(path, paste0(version[1], ".yaml"))
+  filename = file.path(path, sprintf("%s-%s.yaml", 
+                                     gsub(" ", "_", scientificname[1], fixed = TRUE),
+                                     version[1]))
   yaml::read_yaml(filename)
 }
 
 
 
-write_configuration = function(cfg = list(version = "v000", species = "Canis familiaris"),
+write_configuration = function(cfg = list(version = "v000", 
+                                          species = "Canis familiaris"),
                               path = data_path("models")){
   
   #' Given a versioned configuration write a configuration
@@ -25,13 +30,15 @@ write_configuration = function(cfg = list(version = "v000", species = "Canis fam
   
   if (!"version" %in% names(cfg)) stop("input config must have version element")
   
-  filename = file.path(path, paste0(cfg$version[1], ".yaml"))
+  filename = file.path(path, sprintf("%s-%s.yaml", 
+                                     gsub(" ", "_", cfg$species[1], fixed = TRUE),
+                                     cfg$version[1]))
   yaml::write_yaml(cfg, filename)
 }
 
 
 
-read_configurations = function(versions,
+read_configurations = function(scientificname, versions,
                                path = data_path("models")){
   
   #' Read one or more configurations into a table. 
@@ -40,13 +47,14 @@ read_configurations = function(versions,
   #' will contains ALL elements (the union of elements) with missing items assigned
   #' to NA or NULL as appropriate.
   #' 
+  #' @param scientificname str one scientific name (only one)
   #' @param versions chr one or more versions
   #' @param path the model data path
   #' @return table of config values
   
   x = lapply(versions,
              function(ver){
-               x = read_configuration(ver, path = path) |>
+               x = read_configuration(scientificname, ver, path = path) |>
                  dplyr::as_tibble()
                return(x)
              }) |>

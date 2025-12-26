@@ -1,4 +1,4 @@
-workflowset_selectomatic = function(wflow,
+workflowset_selectomatic = function(wflow, splitdata,
                                     filename = "workflowset",
                                     path = data_path("models")){
   
@@ -9,10 +9,12 @@ workflowset_selectomatic = function(wflow,
   #' in the interest of speed, but the details are worthy of investogating.
   #' 
   #' @param wflow a workflow set with one or more workflows
+  #' @param splitdata rsplit object with training and testing data
   #' @param filename str or NULL, a name for the file or NULL to not write
   #' @param path str or NULL, if not NULL then write each fitted workflow to file
   #' @return a tibble with one or more  "last_fit" model objects
   
+  # fish out the best metrics per workflow
   m = metrics_table(wflow, what = "best")
   
   models = wflow$wflow_id |>
@@ -21,10 +23,10 @@ workflowset_selectomatic = function(wflow,
         # get the workflow
         w = workflowsets::extract_workflow(wflow, wid)
         # transfer the "best" hyperparameter values to each workflow
-        tune::finalize_workflow(w, filter(m, wflow_id == wid)) |>
+        these_metrics = dplyr::filter(m, .data$wflow_id == wid)
+        tune::finalize_workflow(w, these_metrics) |>
           # now fit with all of the training data (and testing data for measuring)
-          tune::last_fit(split_all_data, 
-                         metrics = tidysdm::sdm_metric_set(yardstick::accuracy))
+          tune::last_fit(splitdata, metrics = tidysdm::sdm_metric_set(yardstick::accuracy))
       }, simplify = FALSE) |> 
     dplyr::bind_rows() |>
     dplyr::mutate(wflow_id =  wflow$wflow_id, .before = 1)
@@ -38,19 +40,20 @@ workflowset_selectomatic = function(wflow,
 
 
 model_fit_metrics = function(x = read_model_fit(),
-                             id = dplyr::pull(x, dplyr::all_of("wflow_id"))){
+                             ids = dplyr::pull(x, dplyr::all_of("wflow_id"))){
   
   #' Given a table of model fits extract the metrics into a tidy table
   #' 
   #' @param x table of model fits
-  #' @param id str, the workflow(s) to operate upon, by default all of them
+  #' @param ids str, the workflow(s) to operate upon, by default all of them
   #' @return a table of metrics
+
   x |>
-    dplyr::filter(wflow_id %in% id) |>
+    dplyr::filter(.data$wflow_id %in% ids) |>
     dplyr::rowwise() |>
     dplyr::group_map(
       function(row, key){
-        r = row$.metrics[[1]] |>
+        row$.metrics[[1]] |>
           dplyr::select(-dplyr::any_of(c(".estimator", ".config"))) |>
           tidyr::pivot_wider(names_from = .metric, values_from = .estimate) |>
           dplyr::mutate(wflow_id = row |> pull(1), .before = 1) 
@@ -59,9 +62,9 @@ model_fit_metrics = function(x = read_model_fit(),
 }
 
 model_fit_accuracy = function(x = read_model_fit(),
-                              id = dplyr::pull(x, dplyr::all_of("wflow_id"))){
+                              ids = dplyr::pull(x, dplyr::all_of("wflow_id"))){
    x |>
-    dplyr::filter(wflow_id %in% id) |>
+    dplyr::filter(wflow_id %in% ids) |>
     dplyr::rowwise() |>
     dplyr::group_map(
       function(row, key){
@@ -73,16 +76,16 @@ model_fit_accuracy = function(x = read_model_fit(),
 }
 
 model_fit_roc_auc = function(x = read_model_fit(),
-                             id = dplyr::pull(x, dplyr::all_of("wflow_id"))){
+                             ids = dplyr::pull(x, dplyr::all_of("wflow_id"))){
   
   #' Given a table of model fits, plot the ROC curves with the AUC shown
   #' 
   #' @param x table of model fits
-  #' @param id str, the workflow(s) to operate upon, by default all of them
+  #' @param ids str, the workflow(s) to operate upon, by default all of them
   #' @return faceted ggplot object
   
   pp = x |>
-    dplyr::filter(wflow_id %in% id) |>
+    dplyr::filter(wflow_id %in% ids) |>
     dplyr::rowwise() |>
     dplyr::group_map(
     function(row, key){
@@ -124,17 +127,17 @@ model_fit_roc_auc = function(x = read_model_fit(),
 }
 
 model_fit_confmat = function(x = read_model_fit(),
-                             id = dplyr::pull(x, dplyr::all_of("wflow_id"))){
+                             ids = dplyr::pull(x, dplyr::all_of("wflow_id"))){
   
   #' Given a table of model fits, plot the confusion matrices
   #' 
   #' Borrows heavily from the [yardstick package](https://github.com/tidymodels/yardstick/blob/51761c4e7a34e960949c75aeb2952ef02c408106/R/conf_mat.R#L421)
   #' 
   #' @param x table of model fits
-  #' @param id str, the workflow(s) to operate upon, by default all of them 
+  #' @param ids str, the workflow(s) to operate upon, by default all of them 
   #' @return faceted ggplot object 
   
-  acc = model_fit_accuracy(x)
+  acc = model_fit_accuracy(x, ids = ids)
   
   cm_as_tibble = function(cm){
     x = as.data.frame.table(cm$table) |>
@@ -147,7 +150,7 @@ model_fit_confmat = function(x = read_model_fit(),
   
   
   pp = x |>
-    dplyr::filter(wflow_id %in% id) |>
+    dplyr::filter(wflow_id %in% ids) |>
     dplyr::rowwise() |>
     dplyr::group_map(
       function(row, key){

@@ -28,26 +28,13 @@ source("setup.R")
 
 # Load data - choose a month and sampling approach
 
-Let's load what we need to build a model for August the model configuration. And we'll need the covariate data.  Notice that we select the covariates that are included in our configuration.
+Let's load what we need to build a model" the configuration and the covariate data.  Notice that we select the covariates that are included in our configuration plus "class".
+
 
 ```{r load_data}
-model_input = read_model_input(scientificname = "Mola mola", 
-                               mon = "Aug")
-cfg = read_configuration(version = "Aug", path = data_path("models"))
-db = brickman_database()
-covars = read_brickman(db |> filter(scenario == "PRESENT", interval == "mon"))|>
-  select(all_of(cfg$keep_vars))
-```
-
-Of course we need covariates for August only, for this we can use a function we prepared earlier, `prep_model_data()`.  Note the we specifically ask for a plain table which means we are dropping the spatial information for now.  Also, we select only the variables required in the configuration, plus the `class` label.
-
-```{r august_data}
-all_data = prep_model_data(model_input, 
-                           month = "Aug",
-                           covars = covars, 
-                           form = "sf") |>
-  select(all_of(c("class", cfg$keep_vars)))
-all_data
+cfg = read_configuration(scientificname = "Mola mola", version = "v1")
+model_input = read_model_input(scientificname = "Mola mola", version = "v1") |>
+  select(all_of(c("class", cfg$keep)))
 ```
 
 # Splitting the data into groups
@@ -59,16 +46,16 @@ After that, we want to split the **training** data so that we have groups, or "f
 ## Initial split into training and testing groups
 
 ```{r initial_split}
-split_all_data = spatial_initial_split(all_data, 
-                                       prop = 1 / 5,     # 20% for testing
-                                       strategy = spatial_block_cv) # see ?spatial_block_cv
-split_all_data
+model_input_split = spatial_initial_split(model_input, 
+                        prop = 1 / 5,     # 20% for testing
+                        strategy = spatial_block_cv) # see ?spatial_block_cv
+model_input_split
 ```
 
 We can see that there are 5 times more points (observations and background) reserved for training.  Now we can look at the spatial distribution of the two groups.
 
 ```{r initial_split_plot}
-autoplot(split_all_data)
+autoplot(model_input_split)
 ```
 
 ## Split the training group into regional folds
@@ -76,11 +63,11 @@ autoplot(split_all_data)
 Next we take just the **training** data and split that into a set cross-validation folds.  We do this to improve our model by making multiple spatially distributed training mini-datasets.
 
 ```{r cv_training}
-tr_data = training(split_all_data)
+tr_data = training(model_input_split)
 cv_tr_data <- spatial_block_cv(tr_data,
   v = 5,     
-  cellsize = grid_cellsize(all_data),
-  offset = grid_offset(all_data) + 0.00001
+  cellsize = grid_cellsize(model_input),
+  offset = grid_offset(model_input) + 0.00001
 )
 autoplot(cv_tr_data)
 ```
@@ -103,11 +90,8 @@ In the case here where the outcome (`class`) is a function of all other variable
 :::
 
 
-Now we make the recipe. Note that no computation takes place.
+Now we make the recipe. Note that no computation takes place. Technically, `recipe()` only needs a small subset of the data set to establish the names and data types of the predictor and outcome variables. Just one row would suffice. That underscores that a recipe is simply building a template.  
 
-::: {.callout-note}
-Technically, `recipe()` only needs a small subset of the data set to establish the names and data types of the predictor and outcome variables. Just one row would suffice. That underscores that a recipe is simply building a template.  
-:::
 
 ```{r recipe}
 one_row_of_training_data = dplyr::slice(tr_data,1)
@@ -143,6 +127,15 @@ if ("Xbtm" %in% cfg$keep_vars){
 }
 rec
 ```
+We also need to handle factored covariates, like `month` might factored.  We do so by building in an automated conversion to numeric values.  Oddly, the step function is called `step_dummy()` which simply transforms the month column into a series of columns `Jan`, `Feb`,..., `Dec` where each row's value is 1 for the row's month and 0 for all the other months.
+
+```{r step_dummy_month}
+if ("month" %in% cfg$keep_vars){
+  rec = rec |>
+    step_dummy(month)
+}
+rec
+```
 
 # Create a workflow
 
@@ -150,28 +143,28 @@ rec
 
 We haven't discussed which kinds of models to use in any detail, so we'll just pick 4 convenient examples: 
 
- + glm: generalized linear model
+ + glm: [generalized linear model](https://en.wikipedia.org/wiki/Generalized_linear_model)
  
- + rf: random forest
+ + rf: [random forest](https://en.wikipedia.org/wiki/Random_forest)
  
- + gbm: boosted regression trees
+ + gbm: [boosted regression trees](http://download.nust.na/pub3/cran/web/packages/dismo/vignettes/brt.pdf)
  
- + maxent: maximum entropy
+ + maxent: [maximum entropy](https://en.wikipedia.org/wiki/Principle_of_maximum_entropy)
  
-For each model type there is a convenient version designed to handle spatial data.
+For each model type there is a convenient species distribution model specification (`sdm_spec_*`) version designed to handle spatial data. It is here that we specify the hyperparameters to tune.  In general we accept the defaults, but for `random_forest` we ask that we include tuning on the number of trees, too.
 
 ```{r make_workflow}
 wflow = workflow_set(
   preproc = list(default = rec),
   models = list(
       glm = sdm_spec_glm(),
-      rf = sdm_spec_rf(trees = tune()),
-      gbm = sdm_spec_boost_tree(),
-      maxent = sdm_spec_maxent())
+      rf = sdm_spec_rf(trees = tune()), #<-- tune sdm defaults plus trees
+      gbm = sdm_spec_boost_tree(), 
+      maxent = sdm_spec_maxent()) 
 )
 ```
 
-That's it! Of course, it's just a container of our goodies.  
+That's it! Of course, it's just a container of our goodies. Really, it has not done anything other than a few checks.
 
 ## Chosing metrics for measuring how well the models do
 
@@ -192,11 +185,13 @@ But first...
 
 > Many models have **hyperparameters** that can’t be learned directly from a single data set when training the model. Instead, we can train many models in a grid of possible hyperparameter values and see which ones turn out best. [from Tidy Models with R](https://www.tidymodels.org/learn/work/tune-svm/)
 
-So they are parameters (knobs) set for each model. These parameters help guide the optimal structure for solving the problem.  Think of a building contractor deciding which tool is the best one for the given task: "should I use my old hand saw? or should I use my laser guided power saw?"  For a model like Random Forest the structure might be "what is the best number of trees to use?" In order to figure out the best values to set these parameters to we actually vary them while running the model repeatedly and then picking the "best".    
+So they are parameters (knobs) set for each model. These parameters help guide the optimal structure for solving the problem.  Think of an music conductor planning for a concert: what is the right hall for this performance?  How many cellos do we need? Do I have to have a kettle drum? These are structural questions before diving into the actual music to be played.  
+
+In order to figure out the best values to set these parameters to we actually vary them while running the model in "mini-mode" repeatedly and then picking the "best".  For each iteration we provide a small portion of the data, and we test various values that the parameters might take on.
 
 ### Iterate to find various hyperparameter sets
 
-Next, we will deploy a function that will take each recipe-model combination and iterator over each of the many-many-many folds (well, 5 in our case) while adjusting the parameters (if any can be adjusted). The results of each iteration will be tracked so we can get a sense of the range and average.  And then we'll run each of those iterations three times and come up with an average for each.  Imagine that this is like a team of minions, each armed with a recipe and model, directing other minions to run the model fitting on each fold.  We are only setting up a grid of 3, which is fine for a class but in practice might be a much higher number.
+Next, we will deploy a function that will take each recipe-model combination and iterator over each of the many-many-many folds (well, 5 in our case) while adjusting the parameters (if any can be adjusted). The results of each iteration will be tracked so we can get a sense of the range and average.  And then we'll run each of those iterations three times and come up with an average for each.  Imagine that this is like a team of minions, each armed with a recipe and model, directing other minions to run the model fitting on each fold.  We are only setting up a grid of 3, which is fine for our class but in practice might be a much higher number.  A systematic and exhaustive "grid" approach works well for small cases, but it can become unwieldy. Other approaches include random sampling and other techniques to lower the computational burden.
 
 ```{r fit}
 wflow <- wflow |>
@@ -206,18 +201,20 @@ wflow <- wflow |>
     metrics = metrics, 
     verbose = TRUE)
 ```
+Here's a quick plot of the outputs, with each metruic being showcased.
 ```{r plot_wflow}
 autoplot(wflow)
 ```
-Note that "default_glm" only has one result rather than three.  That is because there are no parameters to tune in general linearized models; it's one and done. 
+Note that "default_glm" only has one result rather than three.  That is because there are no hyperparameters to tune in general linearized models.
 
-### Choose the best set of hyperparamters for each model
 
-What is the best configuration of hyperparameters for each model? Well, for "default_glm" there is only one, so that sort of doesn't count - we chose the only one we have. For the others we have to dig in to figure out which set of hyperparameters is best for each model.  We have written a wrapper function to speed things along; it accepts the workflow set and the path and filename to save the models.
+### Choose the best set of hyperparameters for each model
+
+What is the best configuration of hyperparameters for each model? Well, for "default_glm" there is only one, so that sort of doesn't count - we chose the only one we have. For the others we have to dig in to figure out which set of hyperparameters is best for each model.  We have written a wrapper function to speed things along; it accepts the workflow set, the full split data object and the path and filename to save the models.
 
 ```{r select_best}
-model_fits = workflowset_selectomatic(wflow, 
-                                  filename = "model_fits",
+model_fits = workflowset_selectomatic(wflow, model_input_split,
+                                  filename = "Mola_mola-v1-model_fits",
                                   path = data_path("models"))
 model_fits
 ```
@@ -294,7 +291,7 @@ model_fit_roc_auc(model_fits)
 
 Partial dependence reflects the relative contribution of each variable influence over it's full range of values.  The output is a grid grid of plots showing the relative distribution of the variable (bars) as well as the relative influence of the variable (line). 
 ```{r pd_plot}
-model_fit_pdp(model_fits, id = "default_rf")
+model_fit_pdp(model_fits, id = "default_glm")
 ```
 
 # Recap
@@ -303,5 +300,4 @@ We have built 4 tyoes of models using tools from the [tidymodels universe](https
 
 # Coding Assignment
 
-Use the [iterations tutorial](https://bigelowlab.github.io/handytandy/iterations.html) to build a workflow for each month using one or both of your background selection methods.  Save each workflow in the `models` directory.  You should end up with up to 12 workflows, but we know that observations can be highly seasonal so you may find you can't make models for some months.
 

@@ -40,7 +40,7 @@ coast = read_coastline()
 obs = read_observations(scientificname = "Mola mola")
 db = brickman_database() |>
   filter(scenario == "STATIC", var == "mask")
-mask = read_brickman(db, add_depth = FALSE)
+mask = read_brickman(db)
 ```
 
 Let's start with a simple plot of the observations per month. We'll make an array of maps with one constructed per month.  We'll use the [ggplot2 plotting system](https://ggplot2.tidyverse.org/) which is a powerful system for layering components of a plot.
@@ -54,7 +54,7 @@ all_counts = count(st_drop_geometry(obs), month) # counting is faster without sp
 all_counts
 ```
 
-Now we can construct the plot.  Note that layering of data, then the coast then the extra text.  Also, we use alpha (aka transparency or opacity) blending to make the plotting symbols slightly transparent which reveals overlapping points nicely.  
+Now we can construct the plot.  Note that layering of data, then the coast then the extra text.  Also, we use alpha (aka 'transparency' or 'opacity') blending to make the plotting symbols slightly transparent which reveals overlapping points nicely.  
 
 ```{r all_observations}
 ggplot() +
@@ -126,7 +126,9 @@ Now that we have a reasonable set of observation and a sampling bias map, we now
 But how many background points should we get for each month? Should be try balance by month?  Or balance by taking the average for all months.  Let's do the latter, but it might be worth exploring that further.
 
 ```{r n_background_per_month}
-nback_avg = mean(all_counts$n)
+nback_avg = mean(all_counts$n) |>
+  round()
+nback_avg
 ```
 
 So, here we go.  We shall use the [`sapply` iterator](https://bigelowlab.github.io/handytandy/iterations.html) to step through each month. For each month we'll use the thinned observations and the annual bias map to sample for background. At the end we'll have a list of monthly tables which we'll bind into one giant table, and we'll refresh the month column to be a factor (of monthly groupings of course!)
@@ -146,14 +148,20 @@ obsbkg = sapply(month.abb,
 obsbkg 
 ```
 
+A quick tally of the class by month confirms that our `nback_avg` of `r nback_avg` points is used consistently every month.
+
+```{r nback_avg}
+# drop the spatial baggage to speed the tally
+count(st_drop_geometry(obsbkg), month, class)
+```
+
 Let's see where these presence/background points fall relative to each other.
 
 ```{r plot_presence_background}
-
 ggplot() +
   geom_sf(data = obsbkg, 
           mapping = aes(col = class),
-          alpha =  0.2, shape = "circle small", size = 1) +
+          alpha =  0.4, shape = "circle small", size = 1) +
   geom_sf(data = coast, col = "orange")  + 
   labs(x = "Longitude", y = "Latitude", title = "All") +   
   theme_bw() +  # <- make a simple white background
@@ -181,7 +189,7 @@ x = read_model_input(scientificname = "Mola mola")
 
 We have prepared what we call "model inputs", in particular for *Mola mola*, by thinning observations and selecting background points.  There are lots of other approaches to creating the model input, but for the sake of learning we'll stick with this approach.  We developed a function that will produce our model inputs for a given month, and saved them to disk.
 
-# Coding Assignment C02
+# Coding Assignment
 
 ::: {.callout-note appearance="simple"}
 Use the menu option File > New File > R Script to create a blank file. Save the file (even though it is empty) in the “assignment” directory as “assignment_script_2.R”. Use this file to build a script that meets the following challenge. Note that the existing file, “assignment_script_0.R” is already there as an example.
