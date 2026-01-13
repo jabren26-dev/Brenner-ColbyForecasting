@@ -1,6 +1,8 @@
 
-read_observations = function(scientificname = "Mola mola",
+read_observations = function(scientificname,
                              minimum_year = 1970, 
+                             minimum_count = 1,
+                             record_type = NULL,
                              ...){
   
   #' Read raw OBIS data and then filter it
@@ -22,6 +24,23 @@ read_observations = function(scientificname = "Mola mola",
     x = x |>
       filter(year >= minimum_year)
   }
+  
+  #filter out the data where eventDate and individual count is NA
+  x = x |>
+    filter(!is.na(eventDate)) |>
+    filter(!is.na(individualCount))
+  
+  #if the user provided a non-NULL filter by minimum_coun t
+  if (!is.null(minimum_count)){
+    x = x |>
+      filter(individualCount >= minimum_count)
+  }
+  
+  if (!is.null(record_type)){
+    x = x |>
+      filter(basisOfRecord == record_type)
+  }
+  
   
   return(x)
 }
