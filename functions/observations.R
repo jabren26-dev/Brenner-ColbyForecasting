@@ -1,6 +1,7 @@
 
 read_observations = function(scientificname,
-                             minimum_year = 1970, 
+                             minimum_year = 1970,
+                             include_nas = FALSE,
                              minimum_count = 1,
                              maximum_count = NULL,
                              record_type = NULL,
@@ -27,9 +28,12 @@ read_observations = function(scientificname,
   }
   
   #filter out the data where eventDate and individual count is NA
-  x = x |>
+  if (include_nas == FALSE){
+    x = x |>
     filter(!is.na(eventDate)) |>
     filter(!is.na(individualCount))
+    }
+  
   
   #if the user provided a non-NULL filter by minimum_count
   if (!is.null(minimum_count)){
