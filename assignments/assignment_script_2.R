@@ -67,7 +67,6 @@ obsbkg = sapply(month.abb,
 #Like before we are going to drop the geometry and count the total background and presence data for each month
 count(st_drop_geometry(obsbkg), month, class)
 
-#Workflow
 #Open the data in the pipe, create 20 different groups based on month and class, and then randomly sample 1 point
 sampled_data = obsbkg |>
   group_by(month, class) |>
@@ -75,16 +74,25 @@ sampled_data = obsbkg |>
   
 #Use each point to find the SSS, SST, and Tbtm and add it to the table - working on this
 
-#Reread in the brickman database
+#Reread in the Brickman database
 db = brickman_database() |> 
   filter(scenario == "PRESENT", interval == "mon")
 
 #Read in the covariates,
-covars = read_brickman(db)
+covars = read_brickman(db, add = "depth")
 
-#
-
-
+result = sampled_data |>
+  group_by(month) |>
+  group_map(
+    function(rows, keys){
+      if(nrow(rows) == 0) return(NULL)
+      brick = slice(covars, "month", rows$month[1])
+      values = extract_brickman(brick, rows, form = "wide")
+      return(values)
+    }, .keep = TRUE
+  ) |>
+  bind_rows() |>
+  select(-.id)
 
 
 
