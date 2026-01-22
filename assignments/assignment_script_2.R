@@ -71,8 +71,6 @@ count(st_drop_geometry(obsbkg), month, class)
 sampled_data = obsbkg |>
   group_by(month, class) |>
   slice_sample(n=1) 
-  
-#Use each point to find the SSS, SST, and Tbtm and add it to the table - working on this
 
 #Reread in the Brickman database
 db = brickman_database() |> 
