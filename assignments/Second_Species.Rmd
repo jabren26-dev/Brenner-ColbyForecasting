@@ -45,6 +45,8 @@ ggplot() +
   labs(x = "Longitude", y = "Latitude", title = "All observations") +
   facet_wrap(~month)
 ```
+##Background Points
+
 We are now going to thin the observations, and create a count.
 ```{r thinning_observations, include = TRUE}
 thinned_obs = sapply(month.abb,
@@ -121,3 +123,34 @@ result = sampled_data |>
 result
 ```
 
+##Covariates
+Lets reload the brickman database
+```{r reloading_data}
+db = brickman_database() |>
+  dplyr::filter(scenario == "PRESENT", interval == "mon")
+present = read_brickman(db)
+```
+
+Now we are going to make a pairs plot
+```{r pairs}
+pairs(present)
+```
+
+Now we are going to identify the most independent variables, and drop those that are least independent
+```{r independent_variables}
+keep = filter_collinear(present, method = "cor_caret", cutoff = 0.65)
+drop_me = attr(keep, "to_remove")
+keep = c("depth", "month", keep)
+```
+
+We are now going to look at the model input data
+```{r plot_pres_vs_bg}
+model_input = read_model_input(scientificname = "Melanogrammus aeglefinus")
+present = read_brickman(add = c("depth"))
+variables = extract_brickman(present, model_input, form = "wide")
+variables = variables |>
+  mutate(class = model_input$class) |>   
+  select(-.id)
+
+plot_pres_vs_bg(variables |> select(-month), "class")
+```
