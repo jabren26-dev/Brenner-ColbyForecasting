@@ -1,0 +1,182 @@
+---
+title: "Wolffish Models"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setup2, echo=FALSE}
+source("/home/jabren26/Brenner-ColbyForecasting/setup.R")
+```
+
+```{r load_data, include = FALSE}
+cfg = read_configuration(scientificname = "Anarhichas lupus", version = "v1")
+model_input = read_model_input(scientificname = "Anarhichas lupus", 
+                               version = "v1",
+                               log_me = c("depth", "Xbtm")) |>
+  dplyr::mutate(month = month_as_number(.data$month)) |>
+  select(all_of(c("class", cfg$keep)))
+```
+
+#Examining the Split
+```{r initial_split, include = FALSE}
+model_input_split = spatial_initial_split(model_input, 
+                        prop = 1 / 5,     
+                        strategy = spatial_block_cv) 
+```
+
+After having split the data into training and testing data, here is a spacial image of the training and testing data.
+```{r initial_split_plot, echo = FALSE}
+autoplot(model_input_split)
+```
+
+We then split the training data into different mini-datasets for training shown here:
+```{r cv_training, echo = FALSE}
+tr_data = training(model_input_split)
+cv_tr_data <- spatial_block_cv(tr_data,
+  v = 5,     
+  cellsize = grid_cellsize(model_input),
+  offset = grid_offset(model_input) + 0.00001
+)
+autoplot(cv_tr_data)
+```
+
+#Planning the Analysis 
+
+Now that we have the data all split up, we are going to create a recipe that defines what the different variables signify (predictor, coordinates, and outcomes).
+```{r build_analysis, echo = FALSE}
+one_row_of_training_data = dplyr::slice(tr_data,1)
+rec = recipe(one_row_of_training_data, formula = class ~ .)
+summary(rec)
+```
+
+With our variables all defined, we can begin preparing the analysis by defining the workflows for the different models:
+- Logistic Regression
+- Random Forest
+- Boosted Tree
+- Max Entropy
+
+```{r make_workflow, include = FALSE}
+wflow = workflow_set(
+  
+  preproc = list(default = rec), 
+  
+  models = list(                 
+    
+      
+      glm = logistic_reg(
+          mode = "classification") |>
+        set_engine("glm"),
+      
+      
+      rf = rand_forest(
+          mtry = tune(),
+          trees = tune(),
+          mode = "classification") |>
+        set_engine("ranger", 
+                   importance = "impurity"),
+      
+      
+      btree = boost_tree(
+          mtry = tune(), 
+          trees = tune(), 
+          tree_depth = tune(), 
+          learn_rate = tune(), 
+          loss_reduction = tune(), 
+          stop_iter = tune(),
+          mode = "classification") |>
+        set_engine("xgboost"),
+      
+      maxent = maxent(
+          feature_classes = tune(),
+          regularization_multiplier = tune(),
+          mode = "classification") |>
+        set_engine("maxnet")
+  )
+)
+```
+
+And also our different success metrics:
+- Accuracy
+- Boyce Continuous
+- Area Under the Curve
+- TSS
+
+```{r metrics, include = FALSE}
+metrics = sdm_metric_set(yardstick::accuracy)
+```
+
+These metrics will help the models determine the accuracy and attempt to maximize their correctness, allowing them to adjust their hyperparameters. 
+
+```{r fit, warning = FALSE, include = FALSE}
+wflow <- wflow |>
+  workflow_map("tune_grid",
+    resamples = cv_tr_data, 
+    grid = 3,
+    metrics = metrics, 
+    verbose = TRUE)
+```
+
+#Picking the Best
+
+The results of the different models and there successes across the different metrics are shown here: 
+```{r plot_wflow, echo = FALSE}
+autoplot(wflow)
+```
+
+We then select the best configuration of hyperparameters for each model so we can better analyze the models success. From this we can pull summary statistics:
+```{r select_best, echo = FALSE}
+model_fits = workflowset_selectomatic(wflow, model_input_split,
+                                  filename = "Anarhichas_lupus-v1-model_fits",
+                                  path = data_path("models"))
+
+model_fit_metrics(model_fits)
+```
+
+Confusion Matrices:
+```{r confusion_matrix, echo = FALSE}
+model_fit_confmat(model_fits)
+```
+
+And AUC Plots:
+```{r auc_plot, echo = FALSE}
+model_fit_roc_auc(model_fits)
+```
+
+#Examining the Random Forest
+Using the same testing and training data from earlier:
+```{r random_forest, echo = FALSE}
+rf = model_fits |>
+  filter(wflow_id == "default_rf")
+
+autoplot(rf$splits[[1]])
+```
+
+The random forest used the metrics we set to tune for the best hyperparameters, which had these metrics associated with them:
+```{r success_metrics, echo = FALSE}
+rf$.metrics[[1]]
+```
+
+And then created these predictions:
+```{r rf_preds, echo = FALSE}
+rf$.predictions[[1]]
+```
+
+Here is the overall workflow for the random forest model:
+```{r workflow_2, echo = FALSE}
+rf$.workflow[[1]]
+```
+
+#Partial Dependence Plot 
+
+We then created a partial dependence plot for the best performing model... the random forest model
+```{r pd_plot, echo = FALSE}
+model_fit_pdp(model_fits, wid = "default_rf", title = "Random Forest")
+```
+
+
+
+
+

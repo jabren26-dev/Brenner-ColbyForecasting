@@ -34,8 +34,8 @@ You may also catch that we log scale `depth` and `Xbtm`.  This reduces the numer
 
 
 ```{r load_data}
-cfg = read_configuration(scientificname = "Mola mola", version = "v1")
-model_input = read_model_input(scientificname = "Mola mola", 
+cfg = read_configuration(scientificname = "Anarhichas lupus", version = "v1")
+model_input = read_model_input(scientificname = "Anarhichas lupus", 
                                version = "v1",
                                log_me = c("depth", "Xbtm")) |>
   dplyr::mutate(month = month_as_number(.data$month)) |>
@@ -177,6 +177,7 @@ We next chose which metrics to use when evaluating model performance. The author
 
 ```{r metrics}
 metrics = sdm_metric_set(yardstick::accuracy)
+#metrics = metric_set(tss_max, roc_auc)
 metrics
 ```
 
@@ -223,7 +224,7 @@ What is the best configuration of hyperparameters for each model? Well, for "def
 
 ```{r select_best}
 model_fits = workflowset_selectomatic(wflow, model_input_split,
-                                  filename = "Mola_mola-v1-model_fits",
+                                  filename = "Anarhichas_lupus-v1-model_fits",
                                   path = data_path("models"))
 model_fits
 ```
@@ -313,7 +314,7 @@ rf$.workflow[[1]]
 
 Partial dependence reflects the relative contribution of each variable influence over it's full range of values.  The output is a grid grid of plots showing the relative distribution of the variable (bars) as well as the relative influence of the variable (line). 
 ```{r pd_plot}
-model_fit_pdp(model_fits, wid = "default_btree", title = "Boosted Tree")
+model_fit_pdp(model_fits, wid = "default_rf", title = "Random Forest")
 ```
 
 # Recap
