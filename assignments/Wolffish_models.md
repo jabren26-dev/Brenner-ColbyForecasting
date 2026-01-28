@@ -57,16 +57,22 @@ summary statistics:
     ## # A tibble: 4 × 5
     ##   wflow_id       accuracy boyce_cont roc_auc tss_max
     ##   <chr>             <dbl>      <dbl>   <dbl>   <dbl>
-    ## 1 default_glm       0.649      0.840   0.700   0.314
-    ## 2 default_rf        0.703      0.945   0.762   0.433
-    ## 3 default_btree     0.530      0.905   0.726   0.425
-    ## 4 default_maxent    0.709      0.816   0.746   0.441
+    ## 1 default_glm       0.687      0.696   0.740   0.403
+    ## 2 default_rf        0.73       0.761   0.791   0.532
+    ## 3 default_btree     0.72       0.505   0.782   0.507
+    ## 4 default_maxent    0.73       0.768   0.804   0.534
 
 Confusion Matrices:
 ![](Wolffish_models_files/figure-gfm/confusion_matrix-1.png)<!-- -->
 
 And AUC Plots:
 ![](Wolffish_models_files/figure-gfm/auc_plot-1.png)<!-- -->
+
+``` r
+model_fit_varimp_plot(model_fits)
+```
+
+![](Wolffish_models_files/figure-gfm/model_fit_vip-1.png)<!-- -->
 
 \#Examining the Random Forest Using the same testing and training data
 from earlier:
@@ -78,27 +84,27 @@ hyperparameters, which had these metrics associated with them:
     ## # A tibble: 4 × 4
     ##   .metric    .estimator .estimate .config        
     ##   <chr>      <chr>          <dbl> <chr>          
-    ## 1 accuracy   binary         0.703 pre0_mod0_post0
-    ## 2 boyce_cont binary         0.945 pre0_mod0_post0
-    ## 3 roc_auc    binary         0.762 pre0_mod0_post0
-    ## 4 tss_max    binary         0.433 pre0_mod0_post0
+    ## 1 accuracy   binary         0.73  pre0_mod0_post0
+    ## 2 boyce_cont binary         0.761 pre0_mod0_post0
+    ## 3 roc_auc    binary         0.791 pre0_mod0_post0
+    ## 4 tss_max    binary         0.532 pre0_mod0_post0
 
 And then created these predictions:
 
-    ## # A tibble: 296 × 6
+    ## # A tibble: 300 × 6
     ##    class      .pred_class .pred_presence .pred_background  .row .config        
     ##    <fct>      <fct>                <dbl>            <dbl> <int> <chr>          
-    ##  1 presence   background         0.435              0.565     8 pre0_mod0_post0
-    ##  2 presence   background         0.331              0.669     9 pre0_mod0_post0
-    ##  3 background background         0.00417            0.996    13 pre0_mod0_post0
-    ##  4 background background         0.132              0.868    19 pre0_mod0_post0
-    ##  5 background background         0.00566            0.994    22 pre0_mod0_post0
-    ##  6 background background         0.0144             0.986    35 pre0_mod0_post0
-    ##  7 background background         0.00287            0.997    48 pre0_mod0_post0
-    ##  8 background background         0.0963             0.904    54 pre0_mod0_post0
-    ##  9 background background         0.0528             0.947    69 pre0_mod0_post0
-    ## 10 background background         0.246              0.754    73 pre0_mod0_post0
-    ## # ℹ 286 more rows
+    ##  1 presence   background          0.427             0.573     8 pre0_mod0_post0
+    ##  2 background background          0.0607            0.939    14 pre0_mod0_post0
+    ##  3 background background          0.0606            0.939    26 pre0_mod0_post0
+    ##  4 background background          0.248             0.752    27 pre0_mod0_post0
+    ##  5 background background          0.152             0.848    68 pre0_mod0_post0
+    ##  6 background background          0.373             0.627    89 pre0_mod0_post0
+    ##  7 background background          0.0557            0.944    93 pre0_mod0_post0
+    ##  8 background background          0.174             0.826    95 pre0_mod0_post0
+    ##  9 background background          0.0824            0.918    96 pre0_mod0_post0
+    ## 10 background background          0.105             0.895   107 pre0_mod0_post0
+    ## # ℹ 290 more rows
 
 Here is the overall workflow for the random forest model:
 
@@ -113,17 +119,17 @@ Here is the overall workflow for the random forest model:
     ## Ranger result
     ## 
     ## Call:
-    ##  ranger::ranger(x = maybe_data_frame(x), y = y, mtry = min_cols(~9L,      x), num.trees = ~1000L, importance = ~"impurity", num.threads = 1,      verbose = FALSE, seed = sample.int(10^5, 1), probability = TRUE) 
+    ##  ranger::ranger(x = maybe_data_frame(x), y = y, mtry = min_cols(~1L,      x), num.trees = ~2000L, importance = ~"impurity", num.threads = 1,      verbose = FALSE, seed = sample.int(10^5, 1), probability = TRUE) 
     ## 
     ## Type:                             Probability estimation 
-    ## Number of trees:                  1000 
-    ## Sample size:                      1807 
+    ## Number of trees:                  2000 
+    ## Sample size:                      1803 
     ## Number of independent variables:  9 
-    ## Mtry:                             9 
+    ## Mtry:                             1 
     ## Target node size:                 10 
     ## Variable importance mode:         impurity 
     ## Splitrule:                        gini 
-    ## OOB prediction error (Brier s.):  0.23163
+    ## OOB prediction error (Brier s.):  0.223057
 
 \#Partial Dependence Plot
 

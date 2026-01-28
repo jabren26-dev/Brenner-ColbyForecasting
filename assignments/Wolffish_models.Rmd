@@ -144,6 +144,10 @@ And AUC Plots:
 ```{r auc_plot, echo = FALSE}
 model_fit_roc_auc(model_fits)
 ```
+```{r model_fit_vip}
+model_fit_varimp_plot(model_fits)
+```
+
 
 #Examining the Random Forest
 Using the same testing and training data from earlier:
