@@ -25,7 +25,7 @@ As always, we start by running our setup function. Start RStudio/R, and relaod y
 
 ```{r source_setup, warning = FALSE}
 source("setup.R")
-SPECIES = "Balaenoptera acutorostrata Lacépède"
+SPECIES = "Anarhichas lupus"
 ```
 
 # Observations
@@ -139,6 +139,7 @@ For this species, it seem like it is only the record from 1932 that might be a s
 obs = obs |>
   filter(year >= 1970)
 dim(obs)
+summary(obs)
 ```
 
 That's still a lot of records.  Now let's check out the distribution across the months of the year.
