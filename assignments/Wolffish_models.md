@@ -54,13 +54,17 @@ We then select the best configuration of hyperparameters for each model
 so we can better analyze the models success. From this we can pull
 summary statistics:
 
+    ## → A | warning: `early_stop` was reduced to 0.
+
+    ## There were issues with some computations   A: x1There were issues with some computations   A: x1
+
     ## # A tibble: 4 × 5
     ##   wflow_id       accuracy boyce_cont roc_auc tss_max
     ##   <chr>             <dbl>      <dbl>   <dbl>   <dbl>
-    ## 1 default_glm       0.687      0.696   0.740   0.403
-    ## 2 default_rf        0.73       0.761   0.791   0.532
-    ## 3 default_btree     0.72       0.505   0.782   0.507
-    ## 4 default_maxent    0.73       0.768   0.804   0.534
+    ## 1 default_glm       0.641      0.435   0.679   0.318
+    ## 2 default_rf        0.729      0.977   0.806   0.526
+    ## 3 default_btree     0.584      0.740   0.683   0.331
+    ## 4 default_maxent    0.721      0.812   0.780   0.545
 
 Confusion Matrices:
 ![](Wolffish_models_files/figure-gfm/confusion_matrix-1.png)<!-- -->
@@ -84,27 +88,27 @@ hyperparameters, which had these metrics associated with them:
     ## # A tibble: 4 × 4
     ##   .metric    .estimator .estimate .config        
     ##   <chr>      <chr>          <dbl> <chr>          
-    ## 1 accuracy   binary         0.73  pre0_mod0_post0
-    ## 2 boyce_cont binary         0.761 pre0_mod0_post0
-    ## 3 roc_auc    binary         0.791 pre0_mod0_post0
-    ## 4 tss_max    binary         0.532 pre0_mod0_post0
+    ## 1 accuracy   binary         0.729 pre0_mod0_post0
+    ## 2 boyce_cont binary         0.977 pre0_mod0_post0
+    ## 3 roc_auc    binary         0.806 pre0_mod0_post0
+    ## 4 tss_max    binary         0.526 pre0_mod0_post0
 
 And then created these predictions:
 
-    ## # A tibble: 300 × 6
+    ## # A tibble: 527 × 6
     ##    class      .pred_class .pred_presence .pred_background  .row .config        
     ##    <fct>      <fct>                <dbl>            <dbl> <int> <chr>          
-    ##  1 presence   background          0.427             0.573     8 pre0_mod0_post0
-    ##  2 background background          0.0607            0.939    14 pre0_mod0_post0
-    ##  3 background background          0.0606            0.939    26 pre0_mod0_post0
-    ##  4 background background          0.248             0.752    27 pre0_mod0_post0
-    ##  5 background background          0.152             0.848    68 pre0_mod0_post0
-    ##  6 background background          0.373             0.627    89 pre0_mod0_post0
-    ##  7 background background          0.0557            0.944    93 pre0_mod0_post0
-    ##  8 background background          0.174             0.826    95 pre0_mod0_post0
-    ##  9 background background          0.0824            0.918    96 pre0_mod0_post0
-    ## 10 background background          0.105             0.895   107 pre0_mod0_post0
-    ## # ℹ 290 more rows
+    ##  1 presence   presence            0.710             0.290     2 pre0_mod0_post0
+    ##  2 presence   presence            0.663             0.337    10 pre0_mod0_post0
+    ##  3 background background          0.147             0.853    17 pre0_mod0_post0
+    ##  4 background background          0.223             0.777    18 pre0_mod0_post0
+    ##  5 background background          0.0936            0.906    28 pre0_mod0_post0
+    ##  6 background background          0.168             0.832    30 pre0_mod0_post0
+    ##  7 background background          0.0810            0.919    32 pre0_mod0_post0
+    ##  8 background background          0.167             0.833    34 pre0_mod0_post0
+    ##  9 background background          0.110             0.890    40 pre0_mod0_post0
+    ## 10 background background          0.0802            0.920    42 pre0_mod0_post0
+    ## # ℹ 517 more rows
 
 Here is the overall workflow for the random forest model:
 
@@ -123,13 +127,13 @@ Here is the overall workflow for the random forest model:
     ## 
     ## Type:                             Probability estimation 
     ## Number of trees:                  2000 
-    ## Sample size:                      1803 
+    ## Sample size:                      1576 
     ## Number of independent variables:  9 
     ## Mtry:                             1 
     ## Target node size:                 10 
     ## Variable importance mode:         impurity 
     ## Splitrule:                        gini 
-    ## OOB prediction error (Brier s.):  0.223057
+    ## OOB prediction error (Brier s.):  0.2314177
 
 \#Partial Dependence Plot
 

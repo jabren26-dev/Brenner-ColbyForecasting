@@ -96,6 +96,13 @@ plot_prediction(forecast_rcp85_2075['default_rf'])
 ```
 
 
+Looking at each month overtime:
+
+
+
+
+
+
 ```{r save_pred, echo=FALSE}
 # make sure the output directory exists
 path = make_path("predictions")

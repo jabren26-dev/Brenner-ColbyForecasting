@@ -314,7 +314,7 @@ rf$.workflow[[1]]
 
 Partial dependence reflects the relative contribution of each variable influence over it's full range of values.  The output is a grid grid of plots showing the relative distribution of the variable (bars) as well as the relative influence of the variable (line). 
 ```{r pd_plot}
-model_fit_pdp(model_fits, wid = "default_rf", title = "Random Forest")
+model_fit_pdp(model_fits, wid = "default_maxent", title = "Maximum Entropy")
 ```
 
 # Recap
