@@ -1,34 +1,34 @@
 Brenner - Final Project
 ================
 
-# The Present and Future of the Atlantic Wolffish in the Gulf of Maine
+# The Fish Who Cried Wolf: What the Atlantic Wolffish Tells Us About the Future of the Gulf of Maine
 
 ## Introduction
 
 *Anarhichas lupus*, commonly known as the Atlantic Wolffish, is a large
 carnivorous demersal fish that spends most of its life feeding on
 benthic invertebrates such as crabs, scallops, urchins, and lobsters in
-the Northern Atlantic Ocean (Bianucci et al.). Its position as a
-secondary consumer helps prevent invasive species, like *Cancer maenas*
-(green crabs), and grazers, like *Strongylocentrotus droebachiensis*
-(green sea urchins), from overconsuming seagrass, making the wolffish a
-fierce protector of the seagrass habitat. A generally sedentary species,
-the wolffish inhabits rocky burrows and crevices, making it hard to find
-in large trawl surveys such as the International Bottom Trawl Surveys
-conducted in the spring and fall, leading to its classification as a
-data-deficient species (Fairchild et al.).
+the Northern Atlantic Ocean (Bianucci et al., 2016). Its position as a
+secondary consumer helps prevent invasive species, such as *Cancer
+maenas* (green crabs), and grazers, such as *Strongylocentrotus
+droebachiensis* (green sea urchins), from overconsuming seagrass, making
+the wolffish a fierce protector of the seagrass habitat. A generally
+sedentary species, the wolffish inhabits rocky burrows and crevices,
+making it hard to find in large bottom trawl surveys conducted in the
+spring and fall, leading to its classification as a data-deficient
+species (Fairchild et al., 2015).
 
 Normally caught as bycatch, despite its minimal economic importance as a
 fishery in the Gulf of Maine, attempts have been made to cultivate
 wolffish populations for aquaculture. Found in temperatures ranging from
 -1º to 10ºc, the wolffish’s ability to synthesize antifreeze proteins
 makes it a prime candidate for sea cage farming in colder climates,
-which are considered unsuitable for many other marine species (Francois
-et al.). Further research has been conducted to investigate the
+which are considered unsuitable for many other marine species (Le
+François et al., 2004). Further research has investigated the
 aquaculture potential of the Atlantic wolffish, examining its relatively
 moderate stress physiology by exposing it to handling stress in the
 aquaculture environment, making it a prime candidate for future
-aquaculture cultivation (Hedén et al.).
+cultivation (Hedén et al., 2025).
 
 Although not necessarily a direct competitor with humans in common
 fisheries such as scallops and lobsters, there is significant overlap in
@@ -39,26 +39,24 @@ lobstermen to deal with. This overlap between wolffish and humans, in
 dredging zones for scallops and trapping areas for lobsters, can
 negatively affect wolffish habitat, further solidifying its place as a
 species of concern under the United States Endangered Species Act
-(Bianucci et al.).
-
-Although it does not receive the same public attention as more
-commercially important marine species, the Atlantic wolffish remains an
-important study species. Its role as a protector of kelp forests and
-seagrass habitats provides insight into the health of the North Atlantic
-ecosystem. Furthermore, the aquaculture potential of the Atlantic
-wolffish underscores the importance of studying its habitat preferences
-in the search for more sustainable fishing practices.
+(Bianucci et al., 2016). Although it does not receive the same public
+attention as more commercially important marine species, the Atlantic
+wolffish remains an important study species. Its role as a protector of
+kelp forests and seagrass habitats provides insight into the health of
+the North Atlantic ecosystem. Furthermore, the aquaculture potential of
+the Atlantic wolffish underscores the importance of studying its habitat
+preferences in the search for more sustainable fishing practices.
 
 This study examines the current and future population dynamics of the
 Atlantic wolffish in the Gulf of Maine. Using both nowcasts and
-forecasts of the species distribution within the Gulf of Maine, insight
-into the health of key kelp forest and seagrass habitats, highlighting
-areas for increased conservation interventions to prevent wolffish
-habitat destruction from trawling. These species distribution forecasts
-can also inform policy decisions for commercial lobster and scallop
-fisheries, preventing accidental bycatch of wolffish and protecting kelp
-ecosystems and species of greater commercial importance that dwell
-within them.
+forecasts of the species distribution within the Gulf of Maine, one can
+gain insight into the health of key kelp forest and seagrass habitats,
+highlighting areas for increased conservation interventions to prevent
+wolffish habitat destruction from trawling. These species distribution
+forecasts can also inform policy decisions for commercial lobster and
+scallop fisheries, preventing accidental bycatch of wolffish and
+protecting kelp ecosystems and species of greater commercial importance
+that dwell within them.
 
 ## Examining the Data
 
@@ -77,7 +75,16 @@ data, the data were filtered to complete observations from after 1970
 (an arbitrary cutoff), leaving a total of 1162 observations of wolffish
 in the Gulf of Maine.
 
-![](Final_Project_files/figure-gfm/plot_year-1.png)<!-- -->
+<div class="figure" style="text-align: center">
+
+<img src="Final_Project_files/figure-gfm/plot_year-1.png" alt="Figure 1) Histogram of annual filtered Atlantic wolffish observation data in the Gulf of Maine from 1970 to 2009 (n = 1162)."  />
+<p class="caption">
+
+Figure 1) Histogram of annual filtered Atlantic wolffish observation
+data in the Gulf of Maine from 1970 to 2009 (n = 1162).
+</p>
+
+</div>
 
 Examining observation counts by year, there is a significant decrease in
 the number of Atlantic wolffish observed from 1970 to 2009, with a
@@ -90,9 +97,27 @@ wolffish spotted. This lack of contemporary data excludes distribution
 information from the years since the 2013 heatwave and the continuously
 warming climate since.
 
-![](Final_Project_files/figure-gfm/month_ordered-1.png)<!-- -->
+<div class="figure" style="text-align: center">
 
-![](Final_Project_files/figure-gfm/monthly_obs-1.png)<!-- -->
+<img src="Final_Project_files/figure-gfm/month_ordered-1.png" alt="Figure 2) Histogram of monthly filtered Atlantic wolffish observation data in the Gulf of Maine from January to December (n = 1162)."  />
+<p class="caption">
+
+Figure 2) Histogram of monthly filtered Atlantic wolffish observation
+data in the Gulf of Maine from January to December (n = 1162).
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="Final_Project_files/figure-gfm/monthly_obs-1.png" alt="Figure 3) Map of monthly Atlantic wolffish observation distribution in the Gulf of Maine (n = 1162)."  />
+<p class="caption">
+
+Figure 3) Map of monthly Atlantic wolffish observation distribution in
+the Gulf of Maine (n = 1162).
+</p>
+
+</div>
 
 Examining the observation counts by month, the Atlantic wolffish’s
 status as a data-deficient species further comes into view, as there are
@@ -102,9 +127,19 @@ observations in April, when the National Oceanic and Atmospheric
 Administration (NOAA) conducts bottom trawl surveys. Since the wolffish
 is a bottom-dwelling fish, it is hard for the general public to spot
 from the surface and is also difficult to reach with the trawls used in
-surveys due to its preference for rocky habitats (Fairchild et al.).
+surveys due to its preference for rocky habitats (Fairchild et al.,
+2015).
 
-![](Final_Project_files/figure-gfm/bias_map-1.png)<!-- -->
+<div class="figure" style="text-align: center">
+
+<img src="Final_Project_files/figure-gfm/bias_map-1.png" alt="Figure 4) Spatial bias map of Atlantic wolffish observation distribution in the Gulf of Maine (n = 1162)."  />
+<p class="caption">
+
+Figure 4) Spatial bias map of Atlantic wolffish observation distribution
+in the Gulf of Maine (n = 1162).
+</p>
+
+</div>
 
 Their spatial distribution, as shown on the bias map, demonstrates
 clustering of wolffish along the coast and on banks throughout the Gulf
@@ -112,13 +147,29 @@ of Maine. In these areas, increased nutrient upwelling from colder
 currents supports a thriving ecosystem for a variety of marine species,
 especially scallops. At Stellwagen Bank, the increase in nestled
 scallops on the seafloor has been found to attract foraging Atlantic
-wolffish in the area (Fairchild et al.). This phenomenon could extend to
-other banks, such as George’s Bank southwest of Cape Cod, Brown’s Bank
-off the southwest coast of Nova Scotia, and other coastal areas.
+wolffish in the area (Fairchild et al., 2015). This phenomenon could
+extend to other banks, such as George’s Bank southwest of Cape Cod,
+Brown’s Bank off the southwest coast of Nova Scotia, and other coastal
+areas.
 
-![](Final_Project_files/figure-gfm/examining_background-1.png)<!-- -->
+<div class="figure" style="text-align: center">
 
-![](Final_Project_files/figure-gfm/examining%20background-1.png)<!-- -->
+<img src="Final_Project_files/figure-gfm/examining_background-1.png" alt="Figure 5) Map of monthly presence (observation) and background (pseudo-absence) data of Atlantic wolffish in the Gulf of Maine (n = )"  />
+<p class="caption">
+
+Figure 5) Map of monthly presence (observation) and background
+(pseudo-absence) data of Atlantic wolffish in the Gulf of Maine (n = )
+</p>
+
+</div>
+
+<figure>
+<img src="Final_Project_files/figure-gfm/examining%20background-1.png"
+alt="Figure 6) Violin plots comparing presence and background distribution across various covariates., fig.align=‘center’" />
+<figcaption aria-hidden="true">Figure 6) Violin plots comparing presence
+and background distribution across various covariates.,
+fig.align=‘center’</figcaption>
+</figure>
 
 After examining the data, background points were randomly sampled to
 balance the number of observations and match the regional preferences of
@@ -128,34 +179,251 @@ exact distribution of the Atlantic wolffish. The environmental covariate
 data used for each point, both presence and background, come from the
 Brickman dataset, which uses data from the Bedford Institute of
 Oceanography North Atlantic Model and the Regional Ocean Modeling System
-to forecast the ocean conditions of the Gulf of Maine. These covariates
-include depth, mixed layer depth, bottom salinity, surface salinity,
-surface temperature, bottom temperature, and current vectors. Generally,
-the background and presence points inhabit areas with similar ocean
-conditions, with the presence data showing a skewed distribution toward
-colder sea surface temperatures and deeper mixed layer depths.
+to forecast the ocean conditions of the Gulf of Maine (Brickman et al.,
+2021). These covariates include depth, mixed layer depth, bottom
+salinity, surface salinity, surface temperature, bottom temperature, and
+current vectors. Generally, the background and presence points inhabit
+areas with similar ocean conditions, with the presence data showing a
+skewed distribution toward colder sea surface temperatures and shallower
+mixed layer depths.
 
 ## Modeling
 
-![](Final_Project_files/figure-gfm/initial_split-1.png)<!-- -->
+<div class="figure" style="text-align: center">
 
-<img src="Wolffish_models_files/figure-gfm/fit-1.png" alt="" width="672" />
+<img src="Final_Project_files/figure-gfm/initial_split-1.png" alt="Figure 7) Map of Atlantic wolffish observation distribution split between training and testing datasets."  />
+<p class="caption">
 
-<img src="Wolffish_models_files/figure-gfm/confusion_matrix-1.png" alt="" width="672" />
+Figure 7) Map of Atlantic wolffish observation distribution split
+between training and testing datasets.
+</p>
 
-<img src="Wolffish_models_files/figure-gfm/auc_plot-1.png" alt="" width="672" />
+</div>
 
-<img src="Wolffish_models_files/figure-gfm/model_fit_vip-1.png" alt="" width="672" />
+<div class="figure" style="text-align: center">
 
-<img src="Wolffish_models_files/figure-gfm/pd_plot-1.png" alt="" width="672" />
+<img src="Wolffish_models_files/figure-gfm/fit-1.png" alt="Figure 8) Plots of model success metrics for four different distribution models (boosted tree, generalized linear, maximum entropy, and random forest models) and their variants." width="672" />
+<p class="caption">
+
+Figure 8) Plots of model success metrics for four different distribution
+models (boosted tree, generalized linear, maximum entropy, and random
+forest models) and their variants.
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="Wolffish_models_files/figure-gfm/confusion_matrix-1.png" alt="Figure 9) Confusion matrix of four different distribution models (boosted tree, generalized linear, maximum entropy, and random forest models) comparing model prediction of presence vs. background data against the truth." width="672" />
+<p class="caption">
+
+Figure 9) Confusion matrix of four different distribution models
+(boosted tree, generalized linear, maximum entropy, and random forest
+models) comparing model prediction of presence vs. background data
+against the truth.
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="Wolffish_models_files/figure-gfm/auc_plot-1.png" alt="Figure 10) Area under the curve plots of four different distribution models (boosted tree, generalized linear, maximum entropy, and random forest models) comparing model certainty." width="672" />
+<p class="caption">
+
+Figure 10) Area under the curve plots of four different distribution
+models (boosted tree, generalized linear, maximum entropy, and random
+forest models) comparing model certainty.
+</p>
+
+</div>
+
+After all the data were collected and cleaned, the data were spatially
+thinned to account for spatial bias along the banks. The data was then
+split into training data (1632 data points) to build the models and
+testing data (471 data points) to evaluate the models’ accuracy.
+Workflows for generalized linear, random forest, boosted regression
+tree, and maximum entropy models were then defined and deployed using
+machine learning to determine the correct hyperparameters. The success
+of each model iteration was determined using various metrics, including
+the continuous Boyce index, area under the receiver operating
+characteristic (ROC) curve, training stress score, and accuracy metrics.
+After the best model was selected, each model was compared to the others
+using the same metrics and a confusion matrix. These metrics showed that
+the random forest model performed best at modeling the distribution of
+the Atlantic wolffish population in the Gulf of Maine.
+
+<div class="figure" style="text-align: center">
+
+<img src="Wolffish_models_files/figure-gfm/model_fit_vip-1.png" alt="Figure 11) Plot of covariate contribution to model decision for four different distribution models (boosted tree, generalized linear, maximum entropy, and random forest models)." width="672" />
+<p class="caption">
+
+Figure 11) Plot of covariate contribution to model decision for four
+different distribution models (boosted tree, generalized linear, maximum
+entropy, and random forest models).
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="Wolffish_models_files/figure-gfm/pd_plot-1.png" alt="Figure 12) Partial dependence plot of covariate importance for the random forest model." width="672" />
+<p class="caption">
+
+Figure 12) Partial dependence plot of covariate importance for the
+random forest model.
+</p>
+
+</div>
+
+Examining the importance of each covariate in the random forest model’s
+outputs, it appears that sea surface temperature and mixed layer depth
+are significant in determining the distribution of wolffish. Although
+the Atlantic wolffish is typically bottom-dwelling, the sea surface
+temperature’s importance contributes significantly more than bottom
+temperature to the random forest model. This could be due to the higher
+resolution and accuracy of sea surface temperature in the Brickman
+dataset, with sea surface temperature still correlating with bottom
+temperature. This increased contribution of temperature to model output
+is corroborated by a study by Hinchcliffe et al. (2025), which examined
+acute and chronic exposure to warmer water temperatures and found
+decreased intestinal barrier function, reduced growth, and altered
+metabolic rates. Mixed layer depth also influences ocean-floor
+temperature, so Atlantic wolffish might prefer a colder habitat with a
+higher mixed layer depth. Conversely, salinity’s lack of importance in
+the model could result from the haloplasticity of the Atlantic wolffish,
+which exhibits extreme tolerance to higher salinities (Le François et
+al., 2004).
 
 ## Forecasts
 
-<img src="Wolffish_predictions_files/figure-gfm/nowcast-1.png" alt="" width="672" />
+<div class="figure" style="text-align: center">
 
-<img src="Wolffish_predictions_files/figure-gfm/load_2055_RCP45-1.png" alt="" width="672" />
+<img src="Wolffish_predictions_files/figure-gfm/nowcast-1.png" alt="Figure 13) Maps of monthly spatial distribution of Atlantic wolffish using the random forest projection in the year 2025." width="672" />
+<p class="caption">
 
-<img src="Wolffish_predictions_files/figure-gfm/load_2075_RCP45-1.png" alt="" width="672" />
+Figure 13) Maps of monthly spatial distribution of Atlantic wolffish
+using the random forest projection in the year 2025.
+</p>
 
-<img src="Wolffish_predictions_files/figure-gfm/load_2055_RCP85-1.png" alt="" width="672" />
-<img src="Wolffish_predictions_files/figure-gfm/load_2075_RCP85-1.png" alt="" width="672" />
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="Wolffish_predictions_files/figure-gfm/load_2055_RCP45-1.png" alt="Figure 14) Maps of monthly spatial distribution of Atlantic wolffish using the random forest projection in the year 2055 under RCP 4.5 conditions." width="672" />
+<p class="caption">
+
+Figure 14) Maps of monthly spatial distribution of Atlantic wolffish
+using the random forest projection in the year 2055 under RCP 4.5
+conditions.
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="Wolffish_predictions_files/figure-gfm/load_2075_RCP45-1.png" alt="Figure 15) Maps of monthly spatial distribution of Atlantic wolffish using the random forest projection in the year 2075 under RCP 4.5 conditions." width="672" />
+<p class="caption">
+
+Figure 15) Maps of monthly spatial distribution of Atlantic wolffish
+using the random forest projection in the year 2075 under RCP 4.5
+conditions.
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="Wolffish_predictions_files/figure-gfm/load_2055_RCP85-1.png" alt="Figure 16) Maps of monthly spatial distribution of Atlantic wolffish using the random forest projection in the year 2055 under RCP 8.5 conditions." width="672" />
+<p class="caption">
+
+Figure 16) Maps of monthly spatial distribution of Atlantic wolffish
+using the random forest projection in the year 2055 under RCP 8.5
+conditions.
+</p>
+
+</div>
+
+<div class="figure" style="text-align: center">
+
+<img src="Wolffish_predictions_files/figure-gfm/load_2075_RCP85-1.png" alt="Figure 17) Maps of monthly spatial distribution of Atlantic wolffish using the random forest projection in the year 2075 under RCP 8.5 conditions." width="672" />
+<p class="caption">
+
+Figure 17) Maps of monthly spatial distribution of Atlantic wolffish
+using the random forest projection in the year 2075 under RCP 8.5
+conditions.
+</p>
+
+</div>
+
+After deciding to employ the random forest model, one nowcast and four
+forecasts were generated to examine the distribution of the Atlantic
+Wolffish in 2025, 2055, and 2075. The forecasts exhibited outcomes for
+two different scenarios: RCP 4.5 (where greenhouse gas emissions are
+mitigated) and RCP 8.5 (where greenhouse gas emissions remain as is).
+These projections of Atlantic wolffish distribution display an overall
+northward shift in the population, with the wolffish retreating into the
+Bay of Fundy. There is also a seasonal shift in which the presence of
+wolffish increases in colder months, with the vernal peak shifting from
+April to March; conversely, the autumnal peak appears to shift towards
+warmer months, from October to September. These distributional and
+seasonal shifts are further exacerbated in forecasts that incorporate
+RCP 8.5 assumptions, in which the Gulf of Maine experiences more intense
+warming.
+
+Despite this suggested shift, the forecasting results for data-poor
+months conflict with those for data-rich months, and the model’s
+contribution to the model, where Atlantic wolffish tend to prefer colder
+water temperatures. Furthermore, the forecasts seem to place the
+wolffish presence consistently off-shore far away from George’s bank,
+also conflicting with their known habitat preferences of rocky banks.
+Since the model does not take sea floor substrate into account, this
+phenomenon could be the result of similarities in mixed layer depth of
+the Gulf Stream off of George’s bank. Also, the sedentary nature of the
+Atlantic wolffish is not reflected in this model, showing large
+migration patterns in both forecasted and nowcasted projections.
+Although the models’ accuracy is questionable, there is still much to be
+learned from these forecasts of Atlantic wolffish presence in the Gulf
+of Maine.
+
+## Discussion
+
+Regardless of discrepancies in the random forest model of Atlantic
+wolffish population distribution, the forecasts’ northerly shift aligns
+with previous research. In a 2022 study by Bluemel et al. on Atlantic
+wolffish populations in the North Sea off the coast of the United
+Kingdom, the populations were projected to have shifted northward and
+farther from land from 1978 to 2020 using an ensemble model. This
+phenomenon, driven by increased temperatures and coastal anthropogenic
+activity, corroborates the random forest-forecasted wolffish
+distributions. Conversely, in a 2016 study conducted by Bianucci et al.,
+their model projected a retraction of suitable Atlantic wolffish habitat
+towards the shore off the Scotian Shelf due to decreased dissolved
+oxygen on the ocean floor. Despite similarities among the three models,
+the data used to derive them are from more consistent bottom-trawling
+surveys and include additional covariate information, resulting in more
+consistent results. In the future, it could be helpful to examine
+additional covariates, such as anthropogenic activity and dissolved
+oxygen, and to supplement this data with more consistent trawling survey
+data from NOAA’s database.
+
+By anticipating this northerly trend in the Atlantic wolffish
+population, the government can implement administrative measures to
+protect wolffish habitats from overfishing or destruction. Whether it’s
+an altered lobster-trapping or scallop-dredging season, this
+conservation effort will help ensure the continued health of kelp
+forests and the species that rely on the wolffish-protected ecosystems.
+These northerly trends can also support the ongoing effort to establish
+the Atlantic wolffish as an aquaculture species. By providing insight
+into the wolffish’s range, farmers can better understand locations
+suitable for sea-cage harvesting, a more sustainable way to produce
+food.
+
+Despite the informative potential of the random forest podcast, the
+Atlantic wolffish’s data deficiency limits the scope of application of
+these results. To combat this issue, not just with the wolffish but also
+with other demersal and benthic species, scientists could be employed
+alongside lobstermen and other types of fishermen to identify and
+release bycatch species. By cooperating with local fisheries,
+relationships can be fostered that facilitate easier communication
+regarding fishing guidelines and help bridge the understanding between
+the needs of fishermen and the scientific community.
