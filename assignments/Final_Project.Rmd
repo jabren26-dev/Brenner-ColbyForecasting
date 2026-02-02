@@ -236,3 +236,22 @@ Regardless of discrepancies in the random forest model of Atlantic wolffish popu
 By anticipating this northerly trend in the Atlantic wolffish population, the government can implement administrative measures to protect wolffish habitats from overfishing or destruction. Whether it's an altered lobster-trapping or scallop-dredging season, this conservation effort will help ensure the continued health of kelp forests and the species that rely on the wolffish-protected ecosystems. These northerly trends can also support the ongoing effort to establish the Atlantic wolffish as an aquaculture species. By providing insight into the wolffish's range, farmers can better understand locations suitable for sea-cage harvesting, a more sustainable way to produce food.
 
 Despite the informative potential of the random forest podcast, the Atlantic wolffish’s data deficiency limits the scope of application of these results. To combat this issue, not just with the wolffish but also with other demersal and benthic species, scientists could be employed alongside lobstermen and other types of fishermen to identify and release bycatch species. By cooperating with local fisheries, relationships can be fostered that facilitate easier communication regarding fishing guidelines and help bridge the understanding between the needs of fishermen and the scientific community.
+
+## Citations
+
+Bianucci, L., Fennel, K., Chabot, D., Shackell, N., & Lavoie, D. (2016). Ocean biogeochemical models as management tools: A case study for Atlantic wolffish and declining oxygen. ICES Journal of Marine Science, 73(2), 263–274. https://doi.org/10.1093/icesjms/fsv220
+
+Bluemel, J. K., Fischer, S. H., Kulka, D. W., Lynam, C. P., & Ellis, J. R. (2022). Decline in Atlantic wolffish Anarhichas lupus in the North Sea: Impacts of fishing pressure and climate change. Journal of Fish Biology, 100(1), 253–267. https://doi.org/10.1111/jfb.14942
+
+Brickman, D., Alexander, M. A., Pershing, A., Scott, J. D., & Wang, Z. (2021). Projections of physical conditions in the Gulf of Maine in 2050. Elementa: Science of the Anthropocene, 9(1), 00055. https://doi.org/10.1525/elementa.2020.20.00055
+
+Fairchild, E. A., Tallack, S., Elzey, S. P., & Armstrong, M. P. (2015). Spring feeding of Atlantic wolffish (Anarhichas lupus) on Stellwagen Bank, Massachusetts. Fishery Bulletin, 113(2), 191–201. Food Science Source (102038837). https://doi.org/10.7755/FB.113.2.7
+
+Hedén, I., Roques, J. A. C., Andersson, M., Warwas, N., de Fonseka, R., Doyle, D., Hinchcliffe, J., Jönsson, E., Sundell, K., & Sundh, H. (2025). Aquaculture potential of Atlantic wolffish (Anarhichas lupus): Stress and physiological responses to acute handling. Fish Physiology and Biochemistry, 51(1), 39. https://doi.org/10.1007/s10695-025-01456-4
+
+Hinchcliffe, J., Roques, J. A. C., Ekström, A., Hedén, I., Sundell, K., Sundh, H., Sandblom, E., Björnsson, B. T., & Jönsson, E. (2025). Insights into thermal sensitivity: Effects of elevated temperature on growth, metabolic rate, and stress responses in Atlantic wolffish (Anarhichas lupus). Journal of Fish Biology, 106(1), 61–74. https://doi.org/10.1111/jfb.16017
+
+Le François, N. R., Lamarre, S. G., & Blier, P. U. (2004). Tolerance, growth and haloplasticity of the Atlantic wolffish (Anarhichas lupus) exposed to various salinities. Aquaculture, 236(1), 659–675. https://doi.org/10.1016/j.aquaculture.2004.02.021
+
+Ocean Biodiversity Information System (OBIS). (n.d.). Retrieved January 29, 2026, from https://obis.org/
+
